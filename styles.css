@@ -1,0 +1,411 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    border-bottom: 2px solid #34495e;
+}
+
+.content {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.footer {
+    background-color: #2c3e50;
+    color: white;
+    padding: 15px 20px;
+    text-align: center;
+    font-size: 16px;
+    border-top: 2px solid #34495e;
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+}
+
+.blog {
+    border-right: 1px solid #ccc;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+
+/* Style the chat column conversations container */
+.chat > .user-message,
+.chat > .assistant-message {
+    margin-left: 15px;
+    margin-right: 10px;
+}
+
+/* Create conversation groupings in chat column */
+.chat h3 {
+    margin-bottom: 15px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.message {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.user {
+    background-color: #e0f7fa;
+    align-self: flex-start;
+}
+
+.assistant {
+    background-color: #f1f8e9;
+    align-self: flex-end;
+    margin-left: 20px;
+}
+
+/* Hide conversation content in blog column by default (desktop view) */
+.blog .user-message,
+.blog .assistant-message {
+    display: none;
+}
+
+/* Show conversation content in blog column only in mobile view */
+body.mobile-view .blog .user-message,
+body.mobile-view .blog .assistant-message {
+    display: block !important;
+    background-color: #e0f7fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border-left: 4px solid #26c6da;
+    line-height: 1.5;
+}
+
+body.mobile-view .blog .assistant-message {
+    background-color: #f1f8e9 !important;
+    border-left: 4px solid #66bb6a !important;
+}
+
+/* Conversation containers - hide by default in desktop view, show in mobile view */
+div[name^="conversation"] {
+    display: none; /* Hidden by default */
+    margin-left: 30px;
+    margin-right: 15px;
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Show conversation blocks only in mobile view */
+body.mobile-view div[name^="conversation"] {
+    display: block !important;
+}
+
+/* Conversation message styles for desktop view */
+.user-message {
+    background-color: #e0f7fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border-left: 4px solid #26c6da;
+}
+
+.assistant-message {
+    background-color: #f1f8e9;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border-left: 4px solid #66bb6a;
+}
+
+/* Remove default margins from content inside message boxes */
+.user-message p,
+.assistant-message p {
+    margin: 8px 0;
+}
+
+.user-message p:first-child,
+.assistant-message p:first-child {
+    margin-top: 0;
+}
+
+.user-message p:last-child,
+.assistant-message p:last-child {
+    margin-bottom: 0;
+}
+
+.user-message ol,
+.assistant-message ol,
+.user-message ul,
+.assistant-message ul {
+    margin: 8px 0 8px 20px;
+    padding-left: 0;
+}
+
+.user-message ol:first-child,
+.assistant-message ol:first-child,
+.user-message ul:first-child,
+.assistant-message ul:first-child {
+    margin-top: 0;
+}
+
+.user-message ol:last-child,
+.assistant-message ol:last-child,
+.user-message ul:last-child,
+.assistant-message ul:last-child {
+    margin-bottom: 0;
+}
+
+/* Handle direct text content (like "AI:") in message boxes */
+.user-message,
+.assistant-message {
+    line-height: 1.5;
+}
+
+/* Ensure proper spacing for mixed content */
+.user-message > *:first-child,
+.assistant-message > *:first-child {
+    margin-top: 0;
+}
+
+.user-message > *:last-child,
+.assistant-message > *:last-child {
+    margin-bottom: 0;
+}
+
+.user-message strong {
+    color: #00838f;
+    font-weight: bold;
+}
+
+.assistant-message strong {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.highlight {
+    background-color: #ff9800 !important;
+    border: 2px solid #ff5722 !important;
+    box-shadow: 0 0 10px rgba(255, 152, 0, 0.5) !important;
+    transition: all 0.3s ease;
+}
+
+.placeholder {
+    color: blue;
+    cursor: pointer;
+}
+
+/* Mobile toggle button */
+.mobile-toggle {
+    background-color: #f5f5f5;
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.mobile-toggle button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.mobile-toggle button:hover {
+    background-color: #45a049;
+}
+
+/* When in mobile view mode, apply mobile styles regardless of screen size */
+body.mobile-view .content {
+    flex-direction: column !important;
+}
+
+body.mobile-view .chat {
+    display: none !important;
+}
+
+body.mobile-view .blog {
+    width: 100% !important;
+    height: calc(100vh - 160px) !important;
+}
+
+body.mobile-view .mobile-conversation {
+    display: block !important;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 15px 0;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+body.mobile-view .desktop-conversation-link {
+    display: none !important;
+}
+
+/* Style mobile conversation containers - always visible */
+body.mobile-view .mobile-conversation {
+    display: block !important;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 8px;
+    margin: 15px 0;
+    padding: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Hide toggle buttons in mobile view */
+body.mobile-view .mobile-conversation-toggle {
+    display: none !important;
+}
+
+/* Hide placeholder links in mobile view */
+body.mobile-view .placeholder {
+    display: none !important;
+}
+
+/* Style conversation headers */
+body.mobile-view .mobile-conversation h4 {
+    margin: 0 0 10px 0;
+    color: #2196f3;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Make conversation content always visible */
+body.mobile-view .mobile-conversation-content {
+    display: block !important;
+    border-top: 1px solid #dee2e6;
+    padding-top: 10px;
+}
+
+body.mobile-view .blog {
+    font-size: 16px;
+    line-height: 1.6;
+    padding: 15px !important;
+}
+
+/* Style user and assistant messages in mobile conversations */
+body.mobile-view .mobile-conversation-content .user-message {
+    background-color: #e0f7fa;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border-left: 4px solid #26c6da;
+    line-height: 1.5;
+}
+
+body.mobile-view .mobile-conversation-content .assistant-message {
+    background-color: #f1f8e9;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 8px 0;
+    border-left: 4px solid #66bb6a;
+    line-height: 1.5;
+}
+
+/* Handle spacing for mobile view messages */
+body.mobile-view .mobile-conversation-content .user-message p,
+body.mobile-view .mobile-conversation-content .assistant-message p {
+    margin: 8px 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message p:first-child,
+body.mobile-view .mobile-conversation-content .assistant-message p:first-child {
+    margin-top: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message p:last-child,
+body.mobile-view .mobile-conversation-content .assistant-message p:last-child {
+    margin-bottom: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message ol,
+body.mobile-view .mobile-conversation-content .assistant-message ol,
+body.mobile-view .mobile-conversation-content .user-message ul,
+body.mobile-view .mobile-conversation-content .assistant-message ul {
+    margin: 8px 0 8px 20px;
+    padding-left: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message ol:first-child,
+body.mobile-view .mobile-conversation-content .assistant-message ol:first-child,
+body.mobile-view .mobile-conversation-content .user-message ul:first-child,
+body.mobile-view .mobile-conversation-content .assistant-message ul:first-child {
+    margin-top: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message ol:last-child,
+body.mobile-view .mobile-conversation-content .assistant-message ol:last-child,
+body.mobile-view .mobile-conversation-content .user-message ul:last-child,
+body.mobile-view .mobile-conversation-content .assistant-message ul:last-child {
+    margin-bottom: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message > *:first-child,
+body.mobile-view .mobile-conversation-content .assistant-message > *:first-child {
+    margin-top: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message > *:last-child,
+body.mobile-view .mobile-conversation-content .assistant-message > *:last-child {
+    margin-bottom: 0;
+}
+
+body.mobile-view .mobile-conversation-content .user-message strong {
+    color: #00838f;
+    font-weight: bold;
+}
+
+body.mobile-view .mobile-conversation-content .assistant-message strong {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+/* Hide mobile elements on desktop by default */
+.mobile-conversation {
+    display: none !important;
+}
+
+.mobile-conversation-toggle {
+    display: none !important;
+}
