@@ -56,6 +56,8 @@ body {
     border-right: 1px solid #ccc;
     height: 100%;
     overflow-y: auto;
+    line-height: 1.6;
+    font-size: 16px;
 }
 
 .chat {
@@ -98,16 +100,16 @@ body {
     margin-left: 20px;
 }
 
-/* Hide conversation content in blog column by default (desktop view) */
+/* Hide conversation content in blog column by default in desktop view */
 .blog .user-message,
 .blog .assistant-message {
-    display: none;
+    display: block; /* Changed from 'none' to 'block' to work with toggle */
 }
 
 /* Show conversation content in blog column only in mobile view */
 body.mobile-view .blog .user-message,
 body.mobile-view .blog .assistant-message {
-    display: block !important;
+    display: block;
     background-color: #e0f7fa;
     padding: 10px;
     border-radius: 8px;
@@ -117,8 +119,8 @@ body.mobile-view .blog .assistant-message {
 }
 
 body.mobile-view .blog .assistant-message {
-    background-color: #f1f8e9 !important;
-    border-left: 4px solid #66bb6a !important;
+    background-color: #f1f8e9;
+    border-left: 4px solid #66bb6a;
 }
 
 /* Conversation containers - hide by default in desktop view, show in mobile view */
@@ -321,7 +323,7 @@ body.mobile-view .mobile-conversation-content {
 body.mobile-view .blog {
     font-size: 16px;
     line-height: 1.6;
-    padding: 15px !important;
+    padding: 20px !important;
 }
 
 /* Style user and assistant messages in mobile conversations */
@@ -408,4 +410,250 @@ body.mobile-view .mobile-conversation-content .assistant-message strong {
 
 .mobile-conversation-toggle {
     display: none !important;
+}
+
+/* Conversation header with toggle button styling */
+.conversation-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin: 12px 0 8px 0;
+}
+
+.conversation-header a {
+    flex: 1;
+    text-decoration: none;
+    color: inherit;
+}
+
+.conversation-header h4 {
+    margin: 0;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.conversation-header a:hover h4 {
+    color: #0066cc;
+}
+
+/* Toggle button styling */
+.conversation-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 4px 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    margin-right: 10px;
+    transform: rotate(0deg);
+}
+
+.conversation-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Rotate the diamond when conversation is expanded */
+.conversation-toggle.expanded {
+    transform: rotate(45deg);
+}
+
+/* Hide toggle buttons in chat column */
+.chat .conversation-toggle {
+    display: none;
+}
+
+/* Conversation content visibility - hidden by default in blog column */
+.blog .conversation-content {
+    display: none;
+}
+
+.blog .conversation-content.expanded {
+    display: block;
+}
+
+/* Prism.js Code Syntax Highlighting Styles */
+code[class*="language-"],
+pre[class*="language-"] {
+    color: #393a34;
+    font-family: "Consolas", "Bitstream Vera Sans Mono", "Courier New", Courier, monospace;
+    direction: ltr;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    font-size: 0.95em;
+    line-height: 1.2em;
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre > code[class*="language-"] {
+    font-size: 1em;
+}
+
+pre[class*="language-"] {
+    padding: 15px;
+    margin: 0.5em 0;
+    overflow: auto;
+    border-radius: 8px;
+    background: #f8f8f8;
+    border: 1px solid #e1e4e8;
+}
+
+:not(pre) > code[class*="language-"] {
+    padding: 0.1em 0.3em;
+    border-radius: 0.3em;
+    white-space: normal;
+    background: #f6f8fa;
+    border: 1px solid #e1e4e8;
+}
+
+/* Prism syntax highlighting colors */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: #999988;
+    font-style: italic;
+}
+
+.token.namespace {
+    opacity: 0.7;
+}
+
+.token.string,
+.token.attr-value {
+    color: #e3116c;
+}
+
+.token.punctuation,
+.token.operator {
+    color: #393a34;
+}
+
+.token.entity,
+.token.url,
+.token.symbol,
+.token.number,
+.token.boolean,
+.token.variable,
+.token.constant,
+.token.property,
+.token.regex,
+.token.inserted {
+    color: #36acaa;
+}
+
+.token.atrule,
+.token.keyword,
+.token.attr-name,
+.language-autohotkey .token.selector {
+    color: #00a4db;
+}
+
+.token.function,
+.token.deleted,
+.language-autohotkey .token.tag {
+    color: #9a050f;
+}
+
+.token.tag,
+.token.selector,
+.language-autohotkey .token.keyword {
+    color: #00009f;
+}
+
+.token.important,
+.token.function,
+.token.bold {
+    font-weight: bold;
+}
+
+.token.italic {
+    font-style: italic;
+}
+
+.token.class-name {
+    color: #2b91af;
+}
+
+.token.tag,
+.token.tag .punctuation,
+.token.doctype,
+.token.doctype .punctuation,
+.token.doctype .name {
+    color: #800000;
+}
+
+.token.attr-name {
+    color: #ff0000;
+}
+
+.token.attr-value,
+.token.attr-value .punctuation {
+    color: #0000ff;
+}
+
+.token.attr-value .punctuation:first-child {
+    color: #0000ff;
+}
+
+.token.entity {
+    color: #800000;
+}
+
+.token.cdata {
+    color: #808080;
+}
+
+/* Enhanced code block styling */
+pre[class*="language-"] {
+    background: #f8f8f8;
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    overflow-x: auto;
+    font-size: 14px;
+    line-height: 1.45;
+}
+
+/* Code block in message boxes */
+.user-message pre[class*="language-"],
+.assistant-message pre[class*="language-"] {
+    background: #ffffff;
+    border: 1px solid #d1ecf1;
+    margin: 8px 0;
+}
+
+/* Inline code styling */
+:not(pre) > code {
+    background: #f6f8fa;
+    border: 1px solid #e1e4e8;
+    border-radius: 3px;
+    font-size: 85%;
+    margin: 0;
+    padding: 0.2em 0.4em;
+}
+
+/* Dark mode support for code blocks */
+@media (prefers-color-scheme: dark) {
+    pre[class*="language-"] {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
+    
+    :not(pre) > code {
+        background: #2d3748;
+        border-color: #4a5568;
+        color: #e2e8f0;
+    }
 }

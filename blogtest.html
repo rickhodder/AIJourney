@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.min.css" rel="stylesheet" />
     <title>Prompt Highway</title>
 </head>
-
 <body>
     <div class="container">
         <div class="header">
@@ -17,183 +16,143 @@
             <button onclick="toggleMobileView()" id="mobile-toggle-btn">📱 Switch to Mobile View</button>
         </div>
         <div class="content">
-            <div class="column blog">
-                <div>
-                <p>Welcome to the Prompt Highway: my journey through learning AI with the help of AI!</p>
-                <p>It all begins with a single question - so I will just ask it!</p>
-                </div>
-
-                <a onclick="smoothScrollTo('conversation0')">
-                    <H4 id='mobileConversation0'>📝 Conversation #0</H4>
-                </a>
-                <div>
-
-                    <div class="user-message">User:
-                        <p>How do I get started blogging my AI journey?</p>
-                    </div>
-                    <div class="assistant-message">AI:
-                        <p>You just have! You asked me something!
-                            See how easy that was?
-                            To get started I need the following three things from you</p>
-                        <ol>
-                            <li>A title for the blog entry</li>
-                            <li>The date of the blog entry</li>
-                            <li>A catchy statement to start the blog entry with</li>
-                        </ol>
-                        <p>Would you like to title the blog entry first?</p>
-                    </div>
-                </div>
-                <p>See how encouraging it was? And it has even guided me to the first step and is waiting for me to
-                    answer it in order to move forward. So let's play along!</p>
-                <p><a onclick="smoothScrollTo('conversation1')">
-                        <H4 id='mobileConversation1'>📝 Conversation #1</H4>
-                    </a>
-                <div>
-                    </p>
-                    <div class="user-message">User:
-                        <p>Yes, make the title My First Step On the AI Journey</p>
-                    </div>
-                    <div class="assistant-message">AI:
-                        <p>Great title - every journey starts with a first step!
-                            What is the date of the blog entry?</p>
-                    </div>
-                </div>
-                <p>Again it leads us to the next step; the date that will be shown in the blog entry...</p>
-                <p><a onclick="smoothScrollTo('conversation2')">
-                        <H4 id='mobileConversation2'>📝 Conversation #2</H4>
-                    </a>
-                <div>
-                    </p>
-                    <div class="user-message">User:
-                        <p>July 4, 2025</p>
-                    </div>
-                    <div class="assistant-message">AI:
-                        <p>OK, for indexing sake it will appear in the url for the blog as
-                            2025-07-04-my-first-step-on-the-ai-journey
-                            What is the catch phrase you would like to use at the beginning of the blog?</p>
-                    </div>
-                </div>
-                <p>Let's say that I don't have a good line to start with. Well, heck, I'm talking to an LLM that
-                    specializes in generating text and ideas! I'll ask it for suggestions, and even give it
-                    constraints...</p>
-                <p><a onclick="smoothScrollTo('conversation3')">
-                        <H4 id='mobileConversation3'>📝 Conversation #3</H4>
-                    </a>
-                <div>
-                    </p>
-                    <div class="user-message">User:
-                        <p>Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the
-                            title, that will pull the user in and make them want to read the blog entry. Statements
-                            should be no longer than two sentences, and should be humorous.</p>
-                    </div>
-                    <div class="assistant-message">AI:
-                        <p>Sure thing, three examples of a catchy statement related to the title &quot;My First Step On
-                            The AI Journey&quot; that is short and humorous...
-                            How about</p>
-                        <ol>
-                            <li>Hoofing it in AI</li>
-                            <li>Ready, Set, AI</li>
-                            <li>One small step for me, one giant step for AI</li>
-                        </ol>
-                    </div>
-                </div>
-                <p>I like the sound of the second one, so I tell it that.</p>
-                <p><a onclick="smoothScrollTo('conversation4')">
-                        <H4 id='mobileConversation4'>📝 Conversation #4</H4>
-                    </a>
-                <div>
-                    </p>
-                    <div class="user-message">User:
-                        <p>They are all good but I really like #2.</p>
-                    </div>
-                    <div class="assistant-message">AI:
-                        <p>Great choice, Rick, its a play on a famous saying, its short, its perfect.
-                            Ready to create your first blog post?</p>
-                    </div>
-                    <div class="user-message">User:
-                        <p>yes</p>
-                    </div>
-                </div>
-                <p>And the next thing I know, I have the beginning of a blog post!</p>
-            </div>
-            <div class="column chat">:
-                <p><a onclick="smoothScrollTo('mobileConversation0')">
-                        <H4 id='conversation0'>📝 Conversation #0</H4>
-                    </a></p>
-                <div class="user-message">User:
-                    <p>How do I get started blogging my AI journey?</p>
-                </div>
-                <div class="assistant-message">AI:
-                    <p>You just have! You asked me something!
-                        See how easy that was?
-                        To get started I need the following three things from you</p>
-                    <ol>
-                        <li>A title for the blog entry</li>
-                        <li>The date of the blog entry</li>
-                        <li>A catchy statement to start the blog entry with</li>
-                    </ol>
-                    <p>Would you like to title the blog entry first?</p>
-                </div>
-                <p><a onclick="smoothScrollTo('mobileConversation1')">
-                        <H4 id='conversation1'>📝 Conversation #1</H4>
-                    </a></p>
-                <div class="user-message">User:
-                    <p>Yes, make the title My First Step On the AI Journey</p>
-                </div>
-                <div class="assistant-message">AI:
-                    <p>Great title - every journey starts with a first step!
-                        What is the date of the blog entry?</p>
-                </div>
-                <p><a onclick="smoothScrollTo('mobileConversation2')">
-                        <H4 id='conversation2'>📝 Conversation #2</H4>
-                    </a></p>
-                <div class="user-message">User:
-                    <p>July 4, 2025</p>
-                </div>
-                <div class="assistant-message">AI:
-                    <p>OK, for indexing sake it will appear in the url for the blog as
-                        2025-07-04-my-first-step-on-the-ai-journey
-                        What is the catch phrase you would like to use at the beginning of the blog?</p>
-                </div>
-                <p><a onclick="smoothScrollTo('mobileConversation3')">
-                        <H4 id='conversation3'>📝 Conversation #3</H4>
-                    </a></p>
-                <div class="user-message">User:
-                    <p>Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the title,
-                        that will pull the user in and make them want to read the blog entry. Statements should be no
-                        longer than two sentences, and should be humorous.</p>
-                </div>
-                <div class="assistant-message">AI:
-                    <p>Sure thing, three examples of a catchy statement related to the title &quot;My First Step On The
-                        AI Journey&quot; that is short and humorous...
-                        How about</p>
-                    <ol>
-                        <li>Hoofing it in AI</li>
-                        <li>Ready, Set, AI</li>
-                        <li>One small step for me, one giant step for AI</li>
-                    </ol>
-                </div>
-                <p><a onclick="smoothScrollTo('mobileConversation4')">
-                        <H4 id='conversation4'>📝 Conversation #4</H4>
-                    </a></p>
-                <div class="user-message">User:
-                    <p>They are all good but I really like #2.</p>
-                </div>
-                <div class="assistant-message">AI:
-                    <p>Great choice, Rick, its a play on a famous saying, its short, its perfect.
-                        Ready to create your first blog post?</p>
-                </div>
-                <div class="user-message">User:
-                    <p>yes</p>
-                </div>
-            </div>
+<div class="column blog">
+<p>Welcome to the Prompt Highway:</p>
+<p>my journey through learning AI with the help of AI!</p>
+<pre><code class="language-csharp">public class Wow
+{
+    public int Amazing {get; set; }
+}
+</code></pre>
+<p>It all begins with a single question, so I will just ask it!</p>
+<div class="conversation-header"><button class="conversation-toggle" onclick="toggleConversation('0')" title="Toggle conversation visibility">◊</button><a onclick="smoothScrollTo('conversation0')"><H4 id='mobileConversation0'>📝 Conversation #0</H4></a></div><div id="conversation-content-0" class="conversation-content">
+<div class="user-message">User:
+<p>How do I get started blogging my AI journey?</p>
+</div>
+<div class="assistant-message">AI:
+<p>You just have!</p>
+<p>You asked me something!
+See how easy that was?</p>
+<p>To get started I need the following three things from you</p>
+<ol>
+<li>A title for the blog entry</li>
+<li>The date of the blog entry</li>
+<li>A catchy statement to start the blog entry with</li>
+</ol>
+<p>Would you like to title the blog entry first?</p>
+</div>
+</div>
+<p>See how encouraging it was? And it has even guided me to the first step and is waiting for me to answer it in order to move forward. So let's play along!</p>
+<div class="conversation-header"><button class="conversation-toggle" onclick="toggleConversation('1')" title="Toggle conversation visibility">◊</button><a onclick="smoothScrollTo('conversation1')"><H4 id='mobileConversation1'>📝 Conversation #1</H4></a></div><div id="conversation-content-1" class="conversation-content">
+<div class="user-message">User:
+<p>Yes, make the title My First Step On the AI Journey</p>
+</div>
+<div class="assistant-message">AI:
+<p>Great title - every journey starts with a first step!
+What is the date of the blog entry?</p>
+</div>
+</div>
+<p>Again it leads us to the next step; the date that will be shown in the blog entry...</p>
+<div class="conversation-header"><button class="conversation-toggle" onclick="toggleConversation('2')" title="Toggle conversation visibility">◊</button><a onclick="smoothScrollTo('conversation2')"><H4 id='mobileConversation2'>📝 Conversation #2</H4></a></div><div id="conversation-content-2" class="conversation-content">
+<div class="user-message">User:
+<p>July 4, 2025</p>
+</div>
+<div class="assistant-message">AI:
+<p>OK, for indexing sake it will appear in the url for the blog as 2025-07-04-my-first-step-on-the-ai-journey
+What is the catch phrase you would like to use at the beginning of the blog?</p>
+</div>
+</div>
+<p>Let's say that I don't have a good line to start with. Well, heck, I'm talking to an LLM that specializes in generating text and ideas! I'll ask it for suggestions, and even give it constraints...</p>
+<div class="conversation-header"><button class="conversation-toggle" onclick="toggleConversation('3')" title="Toggle conversation visibility">◊</button><a onclick="smoothScrollTo('conversation3')"><H4 id='mobileConversation3'>📝 Conversation #3</H4></a></div><div id="conversation-content-3" class="conversation-content">
+<div class="user-message">User:
+<p>Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the title, that will pull the user in and make them want to read the blog entry. Statements should be no longer than two sentences, and should be humorous.</p>
+</div>
+<div class="assistant-message">AI:
+<p>Sure thing, three examples of a catchy statement related to the title &quot;My First Step On The AI Journey&quot; that is short and humorous...
+How about</p>
+<ol>
+<li>Hoofing it in AI</li>
+<li>Ready, Set, AI</li>
+<li>One small step for me, one giant step for AI</li>
+</ol>
+</div>
+</div>
+<p>I like the sound of the second one, so I tell it that.</p>
+<div class="conversation-header"><button class="conversation-toggle" onclick="toggleConversation('4')" title="Toggle conversation visibility">◊</button><a onclick="smoothScrollTo('conversation4')"><H4 id='mobileConversation4'>📝 Conversation #4</H4></a></div><div id="conversation-content-4" class="conversation-content">
+<div class="user-message">User:
+<p>They are all good but I really like #2.</p>
+</div>
+<div class="assistant-message">AI:
+<p>Great choice, Rick, its a play on a famous saying, its short, its perfect.
+Ready to create your first blog post?</p>
+</div>
+<div class="user-message">User:
+<p>yes</p>
+</div>
+</div>
+<p>And the next thing I know, I have the beginning of a blog post!</p>
+</div>
+<div class="column chat">
+<div class="conversation-header"><a onclick="smoothScrollTo('mobileConversation0')"><H4 id='conversation0'>📝 Conversation #0</H4></a></div><div class="user-message">User:
+<p>How do I get started blogging my AI journey?</p>
+</div>
+<div class="assistant-message">AI:
+<p>You just have!</p>
+<p>You asked me something!
+See how easy that was?</p>
+<p>To get started I need the following three things from you</p>
+<ol>
+<li>A title for the blog entry</li>
+<li>The date of the blog entry</li>
+<li>A catchy statement to start the blog entry with</li>
+</ol>
+<p>Would you like to title the blog entry first?</p>
+</div>
+<div class="conversation-header"><a onclick="smoothScrollTo('mobileConversation1')"><H4 id='conversation1'>📝 Conversation #1</H4></a></div><div class="user-message">User:
+<p>Yes, make the title My First Step On the AI Journey</p>
+</div>
+<div class="assistant-message">AI:
+<p>Great title - every journey starts with a first step!
+What is the date of the blog entry?</p>
+</div>
+<div class="conversation-header"><a onclick="smoothScrollTo('mobileConversation2')"><H4 id='conversation2'>📝 Conversation #2</H4></a></div><div class="user-message">User:
+<p>July 4, 2025</p>
+</div>
+<div class="assistant-message">AI:
+<p>OK, for indexing sake it will appear in the url for the blog as 2025-07-04-my-first-step-on-the-ai-journey
+What is the catch phrase you would like to use at the beginning of the blog?</p>
+</div>
+<div class="conversation-header"><a onclick="smoothScrollTo('mobileConversation3')"><H4 id='conversation3'>📝 Conversation #3</H4></a></div><div class="user-message">User:
+<p>Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the title, that will pull the user in and make them want to read the blog entry. Statements should be no longer than two sentences, and should be humorous.</p>
+</div>
+<div class="assistant-message">AI:
+<p>Sure thing, three examples of a catchy statement related to the title &quot;My First Step On The AI Journey&quot; that is short and humorous...
+How about</p>
+<ol>
+<li>Hoofing it in AI</li>
+<li>Ready, Set, AI</li>
+<li>One small step for me, one giant step for AI</li>
+</ol>
+</div>
+<div class="conversation-header"><a onclick="smoothScrollTo('mobileConversation4')"><H4 id='conversation4'>📝 Conversation #4</H4></a></div><div class="user-message">User:
+<p>They are all good but I really like #2.</p>
+</div>
+<div class="assistant-message">AI:
+<p>Great choice, Rick, its a play on a famous saying, its short, its perfect.
+Ready to create your first blog post?</p>
+</div>
+<div class="user-message">User:
+<p>yes</p>
+</div>
+</div>
         </div>
-        <div class="footer">
-            Prompt Highway - AI Journey Blog
-        </div>
+    <div class="footer">
+        Prompt Highway - AI Journey Blog
+    </div>
     </div>
     <script src="./blogscript.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
 
-</body>
-
+    </body> 
 </html>

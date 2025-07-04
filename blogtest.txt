@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./styles.css">
+    <title>Prompt Highway</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            Prompt Highway
+        </div>
+        <div class="mobile-toggle">
+            <button onclick="toggleMobileView()" id="mobile-toggle-btn">📱 Switch to Mobile View</button>
+        </div>
+        <div class="content">
+
+
+
+
+<?# blogColumn ?>
+
+Welcome to the Prompt Highway: 
+
+my journey through learning AI with the help of AI!
+
+```csharp
+public class Wow
+{
+    public int Amazing {get; set; }
+}
+```
+
+It all begins with a single question, so I will just ask it!
+
+<?# conversationHeader conversationId="0" mobile=yes scrollLink=yes/?><?# conversation conversationId="0" ?><?# conversationStatement type="user" mode="mobile" ?>
+How do I get started blogging my AI journey?
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="mobile" ?>
+You just have! 
+
+You asked me something!
+See how easy that was?
+
+To get started I need the following three things from you
+1. A title for the blog entry
+2. The date of the blog entry
+3. A catchy statement to start the blog entry with
+
+Would you like to title the blog entry first?
+<?#/ conversationStatement ?>
+<?#/ conversation ?>
+
+See how encouraging it was? And it has even guided me to the first step and is waiting for me to answer it in order to move forward. So let's play along!
+
+<?# conversationHeader conversationId="1" mobile=yes scrollLink=yes/?><?# conversation conversationId="1" ?><?# conversationStatement type="user" mode="mobile" ?>
+Yes, make the title My First Step On the AI Journey
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="mobile" ?>
+Great title - every journey starts with a first step!
+What is the date of the blog entry?
+<?#/ conversationStatement ?>
+<?#/ conversation ?>
+
+Again it leads us to the next step; the date that will be shown in the blog entry... 
+
+<?# conversationHeader conversationId="2" mobile=yes scrollLink=yes/?><?# conversation conversationId="2" ?><?# conversationStatement type="user" mode="mobile" ?>
+July 4, 2025
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="mobile" ?>
+OK, for indexing sake it will appear in the url for the blog as 2025-07-04-my-first-step-on-the-ai-journey
+What is the catch phrase you would like to use at the beginning of the blog?
+<?#/ conversationStatement ?>
+<?#/ conversation ?>
+
+Let's say that I don't have a good line to start with. Well, heck, I'm talking to an LLM that specializes in generating text and ideas! I'll ask it for suggestions, and even give it constraints...
+
+<?# conversationHeader conversationId="3" mobile=yes scrollLink=yes/?><?# conversation conversationId="3" ?><?# conversationStatement type="user" mode="mobile" ?>
+Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the title, that will pull the user in and make them want to read the blog entry. Statements should be no longer than two sentences, and should be humorous.
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="mobile" ?>
+Sure thing, three examples of a catchy statement related to the title "My First Step On The AI Journey" that is short and humorous...
+How about
+1. Hoofing it in AI
+2. Ready, Set, AI
+3. One small step for me, one giant step for AI
+<?#/ conversationStatement ?>
+<?#/ conversation ?>
+
+I like the sound of the second one, so I tell it that.
+
+<?# conversationHeader conversationId="4" mobile=yes scrollLink=yes/?><?# conversation conversationId="4" ?><?# conversationStatement type="user" mode="mobile" ?>
+They are all good but I really like #2.
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="mobile" ?>
+Great choice, Rick, its a play on a famous saying, its short, its perfect.
+Ready to create your first blog post?
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="user" mode="mobile" ?>
+yes
+<?#/ conversationStatement ?>
+<?#/ conversation ?>
+
+And the next thing I know, I have the beginning of a blog post!
+
+<?#/ blogColumn ?>
+
+<?# conversationColumn ?>
+<?# conversationHeader conversationId="0" mobile=no /?><?# conversationStatement type="user" mode="normal" ?>
+How do I get started blogging my AI journey?
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="normal" ?>
+You just have! 
+
+You asked me something!
+See how easy that was?
+
+To get started I need the following three things from you
+1. A title for the blog entry
+2. The date of the blog entry
+3. A catchy statement to start the blog entry with
+
+Would you like to title the blog entry first?
+<?#/ conversationStatement ?>
+<?# conversationHeader conversationId="1" mobile=no /?><?# conversationStatement type="user" mode="normal" ?>
+Yes, make the title My First Step On the AI Journey
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="normal" ?>
+Great title - every journey starts with a first step!
+What is the date of the blog entry?
+<?#/ conversationStatement ?>
+<?# conversationHeader conversationId="2" mobile=no /?><?# conversationStatement type="user" mode="normal" ?>
+July 4, 2025
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="normal" ?>
+OK, for indexing sake it will appear in the url for the blog as 2025-07-04-my-first-step-on-the-ai-journey
+What is the catch phrase you would like to use at the beginning of the blog?
+<?#/ conversationStatement ?>
+<?# conversationHeader conversationId="3" mobile=no /?><?# conversationStatement type="user" mode="normal" ?>
+Hmm, I cant think of any. Please give me 3 suggestions for a catchy statement based on the title, that will pull the user in and make them want to read the blog entry. Statements should be no longer than two sentences, and should be humorous.
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="normal" ?>
+Sure thing, three examples of a catchy statement related to the title "My First Step On The AI Journey" that is short and humorous...
+How about
+1. Hoofing it in AI
+2. Ready, Set, AI
+3. One small step for me, one giant step for AI
+<?#/ conversationStatement ?>
+<?# conversationHeader conversationId="4" mobile=no /?><?# conversationStatement type="user" mode="normal" ?>
+They are all good but I really like #2.
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="ai" mode="normal" ?>
+Great choice, Rick, its a play on a famous saying, its short, its perfect.
+Ready to create your first blog post?
+<?#/ conversationStatement ?>
+
+<?# conversationStatement type="user" mode="normal" ?>
+yes
+<?#/ conversationStatement ?>
+<?#/ conversationColumn ?>
+
+
+
+```raw
+        </div>
+    <div class="footer">
+        Prompt Highway - AI Journey Blog
+    </div>
+    </div>
+    <script src="./blogscript.js"></script>
+
+    </body> 
+</html>
+```

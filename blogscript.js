@@ -1,6 +1,5 @@
 function smoothScrollTo(elementId) {
     const targetElement = document.getElementById(elementId);
-    
     if (targetElement) {
         targetElement.scrollIntoView({
             behavior: 'smooth',
@@ -35,10 +34,38 @@ function toggleMobileView() {
             el.classList.remove('show');
             el.previousElementSibling.textContent = el.previousElementSibling.textContent.replace('Hide', 'Show');
         });
+        
+        // Collapse all conversations in the blog column when switching to desktop view
+        document.querySelectorAll('.blog .conversation-content').forEach(contentElement => {
+            const conversationId = contentElement.id.replace('conversation-content-', '');
+            const toggleButton = document.querySelector(`[onclick="toggleConversation('${conversationId}')"]`);
+            
+            if (contentElement && toggleButton) {
+                contentElement.classList.remove('expanded');
+                contentElement.classList.add('collapsed');
+                toggleButton.classList.remove('expanded');
+                toggleButton.textContent = '◊';
+                toggleButton.title = 'Show conversation';
+            }
+        });
     } else {
         // Switch to mobile view
         body.classList.add('mobile-view');
         button.textContent = '💻 Switch to Desktop View';
+        
+        // Expand all conversations in the blog column when switching to mobile view
+        document.querySelectorAll('.blog .conversation-content').forEach(contentElement => {
+            const conversationId = contentElement.id.replace('conversation-content-', '');
+            const toggleButton = document.querySelector(`[onclick="toggleConversation('${conversationId}')"]`);
+            
+            if (contentElement && toggleButton) {
+                contentElement.classList.remove('collapsed');
+                contentElement.classList.add('expanded');
+                toggleButton.classList.add('expanded');
+                toggleButton.textContent = '◊';
+                toggleButton.title = 'Hide conversation';
+            }
+        });
     }
 }
 
@@ -86,3 +113,64 @@ function scrollToPrompt(promptId) {
         }, 1000);
     }, 100);
 }
+
+function toggleConversation(conversationId) {
+    const contentElement = document.getElementById(`conversation-content-${conversationId}`);
+    const toggleButton = document.querySelector(`[onclick="toggleConversation('${conversationId}')"]`);
+    
+    if (contentElement && toggleButton) {
+        // Check if it's currently visible (has expanded class) or hidden (no class or collapsed class)
+        const isCurrentlyVisible = contentElement.classList.contains('expanded');
+        
+        if (isCurrentlyVisible) {
+            // Hide the conversation
+            contentElement.classList.remove('expanded');
+            contentElement.classList.add('collapsed');
+            toggleButton.classList.remove('expanded');
+            toggleButton.textContent = '◊';
+            toggleButton.title = 'Show conversation';
+        } else {
+            // Show the conversation (this handles both initial state and collapsed state)
+            contentElement.classList.remove('collapsed');
+            contentElement.classList.add('expanded');
+            toggleButton.classList.add('expanded');
+            toggleButton.textContent = '◊';
+            toggleButton.title = 'Hide conversation';
+        }
+    }
+}
+
+// Add this function to detect mobile devices
+function isMobileDevice() {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+           window.innerWidth <= 768;
+}
+
+// Add this function to automatically apply mobile view on page load
+function initializeMobileView() {
+    if (isMobileDevice()) {
+        const body = document.body;
+        const button = document.getElementById('mobile-toggle-btn');
+        
+        // Apply mobile view automatically
+        body.classList.add('mobile-view');
+        button.textContent = '💻 Switch to Desktop View';
+        
+        // Expand all conversations in the blog column for mobile
+        document.querySelectorAll('.blog .conversation-content').forEach(contentElement => {
+            const conversationId = contentElement.id.replace('conversation-content-', '');
+            const toggleButton = document.querySelector(`[onclick="toggleConversation('${conversationId}')"]`);
+            
+            if (contentElement && toggleButton) {
+                contentElement.classList.remove('collapsed');
+                contentElement.classList.add('expanded');
+                toggleButton.classList.add('expanded');
+                toggleButton.textContent = '◊';
+                toggleButton.title = 'Hide conversation';
+            }
+        });
+    }
+}
+
+// Initialize mobile view on page load
+document.addEventListener('DOMContentLoaded', initializeMobileView);
