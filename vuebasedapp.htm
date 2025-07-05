@@ -1,0 +1,437 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue.js App with Web Speech</title>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <style>
+        .section {
+            border: 3px solid black;
+            margin: 10px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+
+        .sections-container {
+            margin-top: 20px;
+        }
+
+        .section h3 {
+            margin-top: 0;
+            color: #333;
+            cursor: move;
+            user-select: none;
+            padding: 5px;
+            background-color: #e0e0e0;
+            border-bottom: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+
+        .section h3:hover {
+            background-color: #d0d0d0;
+        }
+
+        .section.dragging {
+            opacity: 0.5;
+            transform: rotate(5deg);
+        }
+
+        .controls {
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+        }
+
+        .controls button {
+            margin-right: 10px;
+            padding: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .controls button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .controls span {
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app"> <!-- Vue application will be mounted here -->
+        <h1>{{ message }}</h1>
+        <button @click="initializeAndStartListening">{{ isListening ? 'Stop Listening' : 'Start Speech Recognition'
+            }}</button>
+
+        <!-- Undo/Redo Controls -->
+        <div class="controls">
+            <button @click="undo" :disabled="currentStateIndex <= 0">Undo</button>
+            <button @click="redo" :disabled="currentStateIndex >= stateHistory.length - 1">Redo</button>
+            <span>History: {{ currentStateIndex + 1 }} / {{ stateHistory.length }}</span>
+        </div>
+
+        <!-- Render sections as separate divisions -->
+        <div class="sections-container">
+            <div v-for="section in sortedSections" :key="section.id" class="section" :data-location="section.location" :style="{ backgroundColor: section.backgroundColor }">
+                <h3 draggable="true" @dragstart="startDrag($event, section)" @dragend="endDrag($event)">
+                    {{ section.name }}
+                </h3>
+                <p>ID: {{ section.id }}</p>
+                <p>Location: {{ section.location }}</p>
+                <p>Display Order: {{ section.displayOrder }}</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const { createApp } = Vue;
+
+        createApp({
+            data() {
+                return {
+                    message: 'Hello Vue!',
+                    isListening: false,
+                    transcript: '',
+                    recognition: null,
+                    voices: [],
+                    selectedVoice: null,
+                    speechText: 'Hello, this is a test message.',                    sections: [
+                        { id: 1, name: 'Introduction', location: 'top', displayOrder: 1, backgroundColor: '#f9f9f9' },
+                        { id: 2, name: 'Main Content', location: 'middle', displayOrder: 2, backgroundColor: '#f9f9f9' },
+                        { id: 3, name: 'Conclusion', location: 'bottom', displayOrder: 3, backgroundColor: '#f9f9f9' }
+                    ],
+                    stateHistory: [],
+                    currentStateIndex: -1
+                }
+            },
+            computed: {
+                sortedSections() {
+                    return this.sections.slice().sort((a, b) => a.displayOrder - b.displayOrder);
+                }
+            }, mounted() {
+                // Save initial state
+                this.saveInitialState();
+
+                // Initialize speech recognition and synthesis
+                this.initializeSpeech();
+            }, methods: {
+                initializeSpeech() {
+                    // Initialize Speech Recognition
+                    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                        this.recognition = new SpeechRecognition();
+
+                        this.recognition.continuous = true;
+                        this.recognition.interimResults = true;
+                        this.recognition.lang = 'en-US';
+
+                        this.recognition.onstart = () => {
+                            console.log('Speech recognition started');
+                            this.isListening = true;
+                        }; this.recognition.onresult = (event) => {
+                            let transcript = '';
+                            let isFinal = false;
+
+                            for (let i = event.resultIndex; i < event.results.length; i++) {
+                                transcript += event.results[i][0].transcript;
+                                if (event.results[i].isFinal) {
+                                    isFinal = true;
+                                }
+                            }
+
+                            this.message = transcript;
+
+                            // Only evaluate speech commands on final results to avoid duplicates
+                            if (isFinal) {
+                                this.evaluateSpeechCommand(transcript);
+                            }
+                        };
+
+                        this.recognition.onerror = (event) => {
+                            console.error('Speech recognition error:', event.error);
+                            this.isListening = false;
+                        };
+
+                        this.recognition.onend = () => {
+                            console.log('Speech recognition ended');
+                            this.isListening = false;
+                        };
+
+                        console.log('Speech Recognition initialized');
+                    } else {
+                        console.error('Speech Recognition not supported in this browser');
+                    }
+
+                    // Initialize Speech Synthesis
+                    if ('speechSynthesis' in window) {
+                        // Load available voices
+                        this.loadVoices();
+
+                        // Update voices when they change (some browsers load voices asynchronously)
+                        speechSynthesis.addEventListener('voiceschanged', this.loadVoices);
+
+                        console.log('Speech Synthesis initialized');
+                    } else {
+                        console.error('Speech Synthesis not supported in this browser');
+                    }
+                },
+                initializeAndStartListening() {
+                    if (!this.recognition) {
+                        // Initialize speech first if not already done
+                        this.initializeSpeech();
+                    }
+
+                    // Toggle listening state
+                    if (this.isListening) {
+                        this.stopListening();
+                    } else {
+                        this.startListening();
+                    }
+                },
+                loadVoices() {
+                    this.voices = speechSynthesis.getVoices();
+                    if (this.voices.length > 0 && !this.selectedVoice) {
+                        this.selectedVoice = this.voices.find(voice => voice.default) || this.voices[0];
+                    }
+                }, startListening() {
+                    // Start speech recognition
+                    if (this.recognition) {
+                        this.recognition.start();
+                        this.isListening = true;
+                    } else {
+                        console.error('Speech recognition not initialized. Please initialize speech first.');
+                    }
+                },
+                stopListening() {
+                    // Stop speech recognition
+                    if (this.recognition && this.isListening) {
+                        this.recognition.stop();
+                        this.isListening = false;
+                        console.log('Speech recognition stopped');
+                    } else if (!this.recognition) {
+                        console.error('Speech recognition not initialized');
+                    } else {
+                        console.log('Speech recognition is not currently listening');
+                    }
+                }, speak() {
+                    // Text-to-speech functionality
+                    console.log('Speaking:', this.speechText);
+                },
+                startDrag(event, section) {
+                    // Store the section being dragged
+                    event.dataTransfer.setData('text/plain', JSON.stringify(section));
+                    event.dataTransfer.effectAllowed = 'move';
+
+                    // Add visual feedback
+                    event.target.closest('.section').classList.add('dragging');
+
+                    console.log('Started dragging section:', section.name);
+                }, endDrag(event) {
+                    // Remove visual feedback
+                    event.target.closest('.section').classList.remove('dragging');
+
+                    console.log('Ended dragging');
+                },                saveInitialState() {
+                    // Save the initial state when component mounts
+                    const initialState = {
+                        sections: JSON.parse(JSON.stringify(this.sections)),
+                        timestamp: new Date().toISOString()
+                    };
+
+                    this.stateHistory = [initialState];
+                    this.currentStateIndex = 0;
+
+                    console.log('Initial state saved:', initialState);
+                    console.log('Current index after initial save:', this.currentStateIndex, 'History length:', this.stateHistory.length);
+                },
+                saveState() {
+                    // Save current state before making changes
+                    const currentState = {
+                        sections: JSON.parse(JSON.stringify(this.sections)),
+                        timestamp: new Date().toISOString()
+                    };
+
+                    // Remove any states after current index (for when we're in middle of history)
+                    this.stateHistory = this.stateHistory.slice(0, this.currentStateIndex + 1);
+
+                    // Add new state
+                    this.stateHistory.push(currentState);
+                    this.currentStateIndex = this.stateHistory.length - 1;
+
+                    console.log('State saved:', currentState);
+                    console.log('Current index after save:', this.currentStateIndex, 'History length:', this.stateHistory.length);
+                },
+                undo() {
+                    console.log('Undo called - Current index:', this.currentStateIndex, 'History length:', this.stateHistory.length);
+                    if (this.currentStateIndex > 0) {
+                        this.currentStateIndex--;
+                        const previousState = this.stateHistory[this.currentStateIndex];
+
+                        // Restore previous state (only sections, not message)
+                        this.sections.splice(0, this.sections.length, ...JSON.parse(JSON.stringify(previousState.sections)));
+
+                        console.log('Undone to state:', previousState);
+                        console.log('Current index after undo:', this.currentStateIndex, 'History length:', this.stateHistory.length);
+                        console.log('Can redo?', this.currentStateIndex < this.stateHistory.length - 1);
+                    } else {
+                        console.log('No more states to undo');
+                    }
+                },
+                redo() {
+                    console.log('Redo called - Current index:', this.currentStateIndex, 'History length:', this.stateHistory.length);
+                    console.log('Redo condition check:', this.currentStateIndex < this.stateHistory.length - 1);
+                    
+                    if (this.currentStateIndex < this.stateHistory.length - 1) {
+                        this.currentStateIndex++;
+                        const nextState = this.stateHistory[this.currentStateIndex];
+
+                        console.log('Restoring state:', nextState);
+
+                        // Force reactivity by using splice (only sections, not message)
+                        this.sections.splice(0, this.sections.length, ...JSON.parse(JSON.stringify(nextState.sections)));
+
+                        console.log('Redone to state:', nextState);
+                        console.log('New current index:', this.currentStateIndex);
+                    } else {
+                        console.log('No more states to redo');
+                        console.log('Current index:', this.currentStateIndex, 'Max index:', this.stateHistory.length - 1);
+                    }
+                },
+                evaluateSpeechCommand(transcript) {
+                    const lowerTranscript = transcript.toLowerCase().trim();
+
+                    if (lowerTranscript.startsWith('add section')) {
+                        this.addNewSection(lowerTranscript);
+                    } else if (lowerTranscript.startsWith('make section')) {
+                        this.makeSectionColor(lowerTranscript);
+                    } else if (lowerTranscript.startsWith('reverse')) {
+                        this.reverseOrder();
+                    } else if (lowerTranscript.startsWith('undo')) {
+                        this.undo();
+                    } else if (lowerTranscript.startsWith('redo')) {
+                        this.redo();
+                    }
+                },
+                addNewSection(text) {
+
+                    // find what that follows "add section"
+                    var sectionName = text.split("add section")[1].trim();
+                    // if the section name ends with a period, remove it
+                    if (sectionName.endsWith('.')) {
+                        sectionName = sectionName.slice(0, -1);
+                    }
+
+                    // Save current state before making changes
+                    this.saveState();
+
+                    // Generate a new section
+                    const newId = Math.max(...this.sections.map(s => s.id)) + 1;
+                    const newDisplayOrder = Math.max(...this.sections.map(s => s.displayOrder)) + 1;
+
+                    // If no section name is provided, use a default name
+                    if (!sectionName) {
+                        sectionName = `New Section ${newId}`;
+                    }
+
+                    const newSection = {
+                        id: newId,
+                        name: sectionName,
+                        location: 'dynamic',
+                        displayOrder: newDisplayOrder,
+                        backgroundColor: '#f9f9f9'
+                    };
+
+                    this.sections.push(newSection);
+                    console.log('Added new section:', newSection);
+                },
+                makeSectionColor(text) {
+                    // Extract text after "make section"
+                    var commandText = text.split("make section")[1].trim();
+                    
+                    // Remove trailing period if present
+                    if (commandText.endsWith('.')) {
+                        commandText = commandText.slice(0, -1);
+                    }
+
+                    // Split the command text to get section name and color
+                    // Expected format: "make section {section name} {color}"
+                    var words = commandText.split(' ');
+                    
+                    if (words.length < 2) {
+                        console.log('Invalid format. Use: "make section [section name] [color]"');
+                        return;
+                    }
+
+                    // Last word is the color, everything before is the section name
+                    var colorName = words[words.length - 1].toLowerCase();
+                    var sectionName = words.slice(0, -1).join(' ').toLowerCase();
+
+                    // Color mapping
+                    const colorMap = {
+                        'red': '#ffcccc',
+                        'blue': '#ccddff',
+                        'green': '#ccffcc',
+                        'yellow': '#ffffcc',
+                        'orange': '#ffddcc',
+                        'purple': '#ddccff',
+                        'pink': '#ffccdd',
+                        'gray': '#e0e0e0',
+                        'grey': '#e0e0e0',
+                        'white': '#ffffff',
+                        'light blue': '#e6f3ff',
+                        'light green': '#e6ffe6',
+                        'light yellow': '#fffce6'
+                    };
+
+                    const backgroundColor = colorMap[colorName];
+                    
+                    if (!backgroundColor) {
+                        console.log(`Color "${colorName}" not recognized. Available colors: ${Object.keys(colorMap).join(', ')}`);
+                        return;
+                    }
+
+                    // Find the section by name (case-insensitive)
+                    const targetSection = this.sections.find(section => 
+                        section.name.toLowerCase().includes(sectionName)
+                    );
+
+                    if (!targetSection) {
+                        console.log(`Section "${sectionName}" not found. Available sections: ${this.sections.map(s => s.name).join(', ')}`);
+                        return;
+                    }
+
+                    // Save current state before making changes
+                    this.saveState();
+
+                    // Change the background color of the specific section
+                    targetSection.backgroundColor = backgroundColor;
+
+                    console.log(`Changed section "${targetSection.name}" to ${colorName} (${backgroundColor})`);
+                },
+                reverseOrder() {
+
+                    // Reverse the order of sections
+                    this.saveState();
+
+                    this.sections = this.sections.reverse();
+                    this.sections.forEach((section, index) => {
+                        section.displayOrder = index + 1; // Update display order
+                    });
+
+                    console.log('Reversed sections order');
+                }
+            }
+        }).mount('#app');
+    </script>
+</body>
+
+</html>
