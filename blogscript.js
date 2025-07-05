@@ -139,38 +139,3 @@ function toggleConversation(conversationId) {
         }
     }
 }
-
-// Add this function to detect mobile devices
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
-           window.innerWidth <= 768;
-}
-
-// Add this function to automatically apply mobile view on page load
-function initializeMobileView() {
-    if (isMobileDevice()) {
-        const body = document.body;
-        const button = document.getElementById('mobile-toggle-btn');
-        
-        // Apply mobile view automatically
-        body.classList.add('mobile-view');
-        button.textContent = '💻 Switch to Desktop View';
-        
-        // Expand all conversations in the blog column for mobile
-        document.querySelectorAll('.blog .conversation-content').forEach(contentElement => {
-            const conversationId = contentElement.id.replace('conversation-content-', '');
-            const toggleButton = document.querySelector(`[onclick="toggleConversation('${conversationId}')"]`);
-            
-            if (contentElement && toggleButton) {
-                contentElement.classList.remove('collapsed');
-                contentElement.classList.add('expanded');
-                toggleButton.classList.add('expanded');
-                toggleButton.textContent = '◊';
-                toggleButton.title = 'Hide conversation';
-            }
-        });
-    }
-}
-
-// Initialize mobile view on page load
-document.addEventListener('DOMContentLoaded', initializeMobileView);
